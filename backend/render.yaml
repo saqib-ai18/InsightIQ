@@ -1,0 +1,81 @@
+services:
+  - type: web
+    name: insightiq-backend
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app.main:app --workers 1 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:$PORT --timeout 120
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: APP_NAME
+        value: InsightIQ
+      - key: APP_VERSION
+        value: 0.1.0
+      - key: DEBUG
+        value: false
+      - key: HOST
+        value: 0.0.0.0
+      - key: PORT
+        value: 8000
+      - key: SECRET_KEY
+        sync: false
+      - key: ALGORITHM
+        value: HS256
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: 30
+      - key: CORS_ORIGINS
+        value: https://insightiq.pages.dev,https://*.insightiq.pages.dev
+      - key: DATABASE_URL
+        sync: false
+      - key: DUCKDB_PATH
+        value: ./data/analytics.duckdb
+      - key: UPLOAD_DIR
+        value: ./uploads
+      - key: MAX_FILE_SIZE_MB
+        value: 100
+      - key: ALLOWED_EXTENSIONS
+        value: csv,xlsx,xls,json,parquet
+      - key: LLM_PROVIDER
+        value: nvidia-nim
+      - key: LLM_API_KEY
+        sync: false
+      - key: LLM_BASE_URL
+        value: https://integrate.api.nvidia.com/v1
+      - key: LLM_MODEL
+        value: meta/llama-3.1-70b-instruct
+      - key: LLM_TEMPERATURE
+        value: 0.1
+      - key: LLM_MAX_TOKENS
+        value: 4096
+      - key: LLM_TIMEOUT
+        value: 60
+      - key: DEFAULT_CHUNK_SIZE
+        value: 10000
+      - key: PROFILING_SAMPLE_SIZE
+        value: 10000
+      - key: QUERY_TIMEOUT_SECONDS
+        value: 30
+      - key: LOG_LEVEL
+        value: INFO
+      - key: LOG_FORMAT
+        value: json
+      - key: R2_ACCOUNT_ID
+        sync: false
+      - key: R2_ACCESS_KEY_ID
+        sync: false
+      - key: R2_SECRET_ACCESS_KEY
+        sync: false
+      - key: R2_BUCKET_NAME
+        value: insightiq-datasets
+      - key: R2_PUBLIC_URL
+        sync: false
+      - key: NVIDIA_RATE_LIMIT_REQUESTS
+        value: 60
+      - key: NVIDIA_RATE_LIMIT_WINDOW_SECONDS
+        value: 60
+      - key: MAX_DATASET_ROWS
+        value: 100000
+      - key: MAX_CONCURRENT_ANALYTICS
+        value: 3
+    healthCheckPath: /health
+    autoDeploy: true

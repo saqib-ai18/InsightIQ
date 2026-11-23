@@ -1,0 +1,11 @@
+name = "insightiq-frontend"
+compatibility_date = "2024-01-01"
+pages_build_output_dir = "./dist"
+
+[vars]
+VITE_API_BASE_URL = "https://insightiq-backend.onrender.com/api"
+
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200
